@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @user.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Password digest:</strong>
+  <%= @user.password_digest %>
+</p>
+
+<%= simple_form_for([@user, @comment], :defaults => { :wrapper_html => {:class=>"form-group"}, :input_html => { :class => "form-control" } }) do |f| %>
+	<%= f.input :author_id, :as=>:hidden, input_html: {:value => current_user.id} %>
+	<%= f.input :user_id, :as=>:hidden, input_html: {:value => @user.id} %>
+	<%= f.input :comment_text, label: "New comment:" %>
+	<%= f.button :submit, input_html: {value: 'Submit comment'}, class: "btn btn-primary"%>
+<% end %>
+
+<% if @comments!=nil %>
+	<% @comments.each do |comment| %>
+		<div class="comment-group">
+			<p><%= comment.author.name %> - <%= comment.created_at %><p>
+			<p class="comment-content"><%= comment.comment_text %></p>
+		</div>
+	<% end %>
+<% end %>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>
